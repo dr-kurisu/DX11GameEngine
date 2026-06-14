@@ -1,7 +1,5 @@
-﻿  Game.cpp
-  Win32Game.cpp
-  Window.cpp
-  main.cpp
+﻿  GraphicsEngine.cpp
+  RenderSystem.cpp
   DX11Game.vcxproj -> C:\Users\Steins Gate\source\repos\DX11Game\Bin\x64\Debug\DX11Game.exe
   'pwsh.exe' is not recognized as an internal or external command,
   operable program or batch file.

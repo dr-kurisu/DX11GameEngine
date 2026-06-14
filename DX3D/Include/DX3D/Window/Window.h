@@ -5,7 +5,7 @@ namespace dx3d {
 	class Window : public Base
 	{
 	public:
-		Window();
+		explicit Window(const WindowDesc& desc);
 		virtual ~Window() override;
 
 	private:

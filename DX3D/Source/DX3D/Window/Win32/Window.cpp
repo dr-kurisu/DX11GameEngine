@@ -14,7 +14,7 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 }
 
 
-dx3d::Window::Window() : Base() {
+dx3d::Window::Window(const WindowDesc& desc): Base(desc.base) {
 	auto registerWindowClassFunction = []()
 	{
 		WNDCLASSEX wc{};
@@ -29,6 +29,7 @@ dx3d::Window::Window() : Base() {
 
 	// fail to create window
 	if (!windowClassId) {
+		logger().log(Logger::LogLevel::Error, "RegisterClassEx failed.");
 		throw std::runtime_error("RegisterClassEx failed");
 	}
 
@@ -45,6 +46,7 @@ dx3d::Window::Window() : Base() {
 	}
 	ShowWindow(static_cast<HWND>(m_handle), SW_SHOW);
 }
+
 
 dx3d::Window::~Window() {
 	DestroyWindow(static_cast<HWND>(m_handle));
