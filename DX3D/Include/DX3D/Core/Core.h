@@ -11,4 +11,5 @@ namespace dx3d {
 	class RenderSystem;
 
 	class Logger;
+	class LoggerOwner;
 }
