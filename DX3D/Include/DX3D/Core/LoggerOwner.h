@@ -5,8 +5,8 @@
 namespace dx3d {
 	struct LoggerOwner {
 		explicit LoggerOwner(Logger::LogLevel level)
-			: logger(level) {
+			: loggerOwner(level) {
 		}
-		Logger logger;
+		Logger loggerOwner;
 	};
 }

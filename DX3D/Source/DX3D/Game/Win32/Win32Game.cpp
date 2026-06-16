@@ -1,4 +1,4 @@
-#include <DX3D/Game/Game.h>
+ #include <DX3D/Game/Game.h>
 #include <Windows.h>
 
 void dx3d::Game::run()
@@ -15,5 +15,4 @@ void dx3d::Game::run()
 		}
 		Sleep(1);
 	}
-
 }
