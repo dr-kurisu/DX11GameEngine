@@ -7,6 +7,6 @@ Base::Base(const BaseDesc& desc): m_logger(desc.logger){
 Base::~Base() {
 }
 
-Logger& Base::logger() const noexcept {
+Logger& Base::logger() noexcept {
 	return m_logger;
 }

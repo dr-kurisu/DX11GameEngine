@@ -6,13 +6,16 @@
 #include <DX3D/Graphics/GraphicsResource.h>
 
 namespace dx3d {
-	class RenderSystem final : public Base, public std::enable_shared_from_this<RenderSystem>
+	class GraphicsDevice final : public Base, public std::enable_shared_from_this<GraphicsDevice>
 	{
 	public:
-		RenderSystem(const RenderSystemDesc& desc);
-		virtual ~RenderSystem() override;
+		GraphicsDevice(const GraphicsDeviceDesc& desc);
+		virtual ~GraphicsDevice() override;
 
 		SwapChainPtr createSwapChain(const SwapChainDesc& desc) const;
+		DeviceContextPtr createDeviceContext() const;
+
+		void executeCommandList(const DeviceContext& context);
 	private:
 		GraphicsResourceDesc getGraphicsResourceDesc() const noexcept;
 	private:

@@ -8,9 +8,10 @@ namespace dx3d {
 	class Game;
 
 	class GraphicsEngine;
-	class RenderSystem;
+	class GraphicsDevice;
 	class SwapChain;
 	class Display;
+	class DeviceContext;
 
 	class Logger;
 	class LoggerOwner;
@@ -22,4 +23,5 @@ namespace dx3d {
 
 
 	using SwapChainPtr = std::shared_ptr<SwapChain>;
+	using DeviceContextPtr = std::shared_ptr<DeviceContext>;
 }

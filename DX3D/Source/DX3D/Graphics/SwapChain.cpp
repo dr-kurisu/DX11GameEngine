@@ -1,4 +1,5 @@
-#include "SwapChain.h"
+#include <DX3D/Graphics/SwapChain.h>
+#include <DX3D/Graphics/GraphicsLogUtils.h>
 
 dx3d::SwapChain::SwapChain(const SwapChainDesc& desc, const GraphicsResourceDesc& gDesc): GraphicsResource(gDesc)
 {
@@ -14,5 +15,21 @@ dx3d::SwapChain::SwapChain(const SwapChainDesc& desc, const GraphicsResourceDesc
 	dxgiDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 	dxgiDesc.Windowed = TRUE;
 
-	DX3DGrpahicsLogErrorAndThrow(m_factory.CreateSwapChain(&m_device, &dxgiDesc, &m_swapChain), "CreateSwapChain Failed.");
+	DX3DGraphicsLogThrowOnFail(m_factory.CreateSwapChain(&m_device, &dxgiDesc, &m_swapChain), "CreateSwapChain Failed.");
+
+	reloadBuffers();
+}
+
+void dx3d::SwapChain::present(bool vsync)
+{
+	DX3DGraphicsLogThrowOnFail(m_swapChain->Present(vsync, 0), "Present Failed.");
+}
+
+void dx3d::SwapChain::reloadBuffers()
+{
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> buffer;
+	DX3DGraphicsLogThrowOnFail(m_swapChain->GetBuffer(0, IID_PPV_ARGS(&buffer)), 
+		"Get Buffer Failed.");
+	DX3DGraphicsLogThrowOnFail(m_device.CreateRenderTargetView(buffer.Get(), nullptr, &m_renderTargetView),
+		"CreateRenderTargetView Failed.");
 }

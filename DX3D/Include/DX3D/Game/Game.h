@@ -12,6 +12,8 @@ namespace dx3d {
 		virtual ~Game() override;
 		virtual void run() final;
 	private:
+		void onInternalUpdate();
+	private:
 		bool m_isRunning = true;
 		std::unique_ptr<GraphicsEngine> m_graphicsEngine{};
 		std::unique_ptr<Display> m_display{};

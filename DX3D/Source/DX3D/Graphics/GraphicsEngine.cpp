@@ -1,16 +1,32 @@
 #include <DX3D/Graphics/GraphicsEngine.h>
-#include <DX3D/Graphics/RenderSystem.h>
+#include <DX3D/Graphics/GraphicsDevice.h>
+#include <DX3D/Graphics/DeviceContext.h>
+#include <DX3D/Graphics/SwapChain.h>
+
 using namespace dx3d;
 
 dx3d::GraphicsEngine::GraphicsEngine(const GraphicsDesc& desc) : Base(desc.base)
 {
-	m_renderSystem = std::make_shared<RenderSystem>(RenderSystemDesc{m_logger});
+	m_graphicsDevice = std::make_shared<GraphicsDevice>(GraphicsDeviceDesc{m_logger});
+	auto& device = *m_graphicsDevice;
+	m_deviceContext = device.createDeviceContext();
 }
 
 dx3d::GraphicsEngine::~GraphicsEngine()
 {
 }
 
-RenderSystem& dx3d::GraphicsEngine::getRenderSystem() const noexcept {
-	return *m_renderSystem;
+GraphicsDevice& dx3d::GraphicsEngine::getGraphicsDevice() noexcept {
+	return *m_graphicsDevice;
+}
+
+void dx3d::GraphicsEngine::render(SwapChain& swapChain)
+{
+	auto& context = *m_deviceContext;
+	context.clearAndSetBackBuffer(swapChain, Vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
+
+	auto& device = *m_graphicsDevice;
+	device.executeCommandList(context);
+
+	swapChain.present();
 }
