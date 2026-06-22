@@ -24,6 +24,8 @@ void PSMain(){
 
 	auto vs = device.compileShader({ shaderSourceName, shaderSourceCode, shaderSourceCodeSize, "VSMain", ShaderType::Vertex });
 	auto ps = device.compileShader({ shaderSourceName, shaderSourceCode, shaderSourceCodeSize, "PSMain", ShaderType::Pixel });
+
+	m_pipeline = device.createGraphicsPipelineState({ *vs, *ps });
 }
 
 dx3d::GraphicsEngine::~GraphicsEngine()
@@ -38,6 +40,7 @@ void dx3d::GraphicsEngine::render(SwapChain& swapChain)
 {
 	auto& context = *m_deviceContext;
 	context.clearAndSetBackBuffer(swapChain, Vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
+	context.setGraphicsPipelineState(*m_pipeline);
 
 	auto& device = *m_graphicsDevice;
 	device.executeCommandList(context);

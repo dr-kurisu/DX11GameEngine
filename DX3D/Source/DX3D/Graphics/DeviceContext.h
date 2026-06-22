@@ -10,6 +10,7 @@ namespace dx3d
 		explicit DeviceContext(const GraphicsResourceDesc& gDesc);
 		
 		void clearAndSetBackBuffer(const SwapChain& swapChain, const Vec4& colour);
+		void setGraphicsPipelineState(const GraphicsPipelineState& pipeline);
 
 	private:
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_context{};

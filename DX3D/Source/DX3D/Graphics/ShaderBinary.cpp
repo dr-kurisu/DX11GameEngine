@@ -2,7 +2,8 @@
 #include <d3dcompiler.h>
 #include <DX3D/Graphics/GraphicsUtils.h>
 
-dx3d::ShaderBinary::ShaderBinary(const ShaderCompileDesc& desc, const GraphicsResourceDesc& gDEesc) : GraphicsResource(gDEesc)
+dx3d::ShaderBinary::ShaderBinary(const ShaderCompileDesc& desc, const GraphicsResourceDesc& gDEesc) : 
+	GraphicsResource(gDEesc), m_type(desc.shaderType)
 {
 	if (!desc.shaderSourceName) DX3DLogThrowInvalidArg("No shader source name provided.");
 	if (!desc.shaderSourceCode) DX3DLogThrowInvalidArg("No shader source code provided.");
@@ -30,4 +31,17 @@ dx3d::ShaderBinary::ShaderBinary(const ShaderCompileDesc& desc, const GraphicsRe
 		&errorBlob
 	);
 	DX3DGraphicsCheckShaderCompile(hr, errorBlob.Get());
+}
+
+dx3d::ShaderBinaryData dx3d::ShaderBinary::getData() const noexcept
+{
+	return {
+		m_shaderBlob->GetBufferPointer(),
+		m_shaderBlob->GetBufferSize(),
+	};
+}
+
+dx3d::ShaderType dx3d::ShaderBinary::getType() const noexcept
+{
+	return m_type;
 }
