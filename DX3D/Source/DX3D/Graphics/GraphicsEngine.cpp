@@ -10,6 +10,20 @@ dx3d::GraphicsEngine::GraphicsEngine(const GraphicsDesc& desc) : Base(desc.base)
 	m_graphicsDevice = std::make_shared<GraphicsDevice>(GraphicsDeviceDesc{m_logger});
 	auto& device = *m_graphicsDevice;
 	m_deviceContext = device.createDeviceContext();
+
+	constexpr char shaderSourceCode[] =
+		R"(
+void VSMain(){
+}
+
+void PSMain(){
+}
+)";
+	constexpr char shaderSourceName[] = "Basic";
+	constexpr auto shaderSourceCodeSize = std::size(shaderSourceCode);
+
+	auto vs = device.compileShader({ shaderSourceName, shaderSourceCode, shaderSourceCodeSize, "VSMain", ShaderType::Vertex });
+	auto ps = device.compileShader({ shaderSourceName, shaderSourceCode, shaderSourceCodeSize, "PSMain", ShaderType::Pixel });
 }
 
 dx3d::GraphicsEngine::~GraphicsEngine()

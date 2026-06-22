@@ -29,7 +29,7 @@ dx3d::Window::Window(const WindowDesc& desc): Base(desc.base), m_size(desc.size)
 
 	// fail to create window
 	if (!windowClassId) {
-		DX3DLogErrorAndTHROW("RegisterClassEx Failed.");
+		DX3DLogThrowError("RegisterClassEx Failed.");
 	}
 
 	RECT rc = { 0, 0, m_size.width, m_size.height };
@@ -41,7 +41,7 @@ dx3d::Window::Window(const WindowDesc& desc): Base(desc.base), m_size(desc.size)
 		NULL, NULL, NULL, NULL
 	);
 	if (!m_handle) {
-		DX3DLogError("CreateWindowEx failed");
+		DX3DLogThrowError("CreateWindowEx failed");
 	}
 	ShowWindow(static_cast<HWND>(m_handle), SW_SHOW);
 }

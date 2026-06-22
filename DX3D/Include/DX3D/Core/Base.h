@@ -17,3 +17,18 @@ namespace dx3d
 		Logger& m_logger;
 	};
 }
+
+#define DX3DlogInfo(message)\
+	DX3DLog(logger(), Logger::LogLevel::Info, message)
+
+#define DX3DLogWarning(message)\
+	DX3DLog(logger(), Logger::LogLevel::Warning, message)
+
+#define DX3DLogError(message)\
+	DX3DLog(logger(), Logger::LogLevel::Error, message)
+
+#define DX3DLogThrowError(message) \
+	DX3DLogThrow(logger(), std::runtime_error, Logger::LogLevel::Info, message)
+
+#define DX3DLogThrowInvalidArg(message) \
+	DX3DLogThrow(logger(), std::invalid_argument, Logger::LogLevel::Info, message)

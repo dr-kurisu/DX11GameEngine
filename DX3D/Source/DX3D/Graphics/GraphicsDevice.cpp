@@ -2,6 +2,7 @@
 #include <DX3D/Graphics/DeviceContext.h>
 #include <DX3D/Graphics/GraphicsLogUtils.h>
 #include <DX3D/Graphics/SwapChain.h>
+#include <DX3D/Graphics/ShaderBinary.h>
 
 using namespace dx3d;
 
@@ -47,6 +48,11 @@ SwapChainPtr dx3d::GraphicsDevice::createSwapChain(const SwapChainDesc& desc) co
 DeviceContextPtr dx3d::GraphicsDevice::createDeviceContext() const
 {
 	return std::make_shared<DeviceContext>(getGraphicsResourceDesc());
+}
+
+ShaderBinaryPtr dx3d::GraphicsDevice::compileShader(const ShaderCompileDesc& desc)
+{
+	return std::make_shared<ShaderBinary>(desc, getGraphicsResourceDesc());
 }
 
 void dx3d::GraphicsDevice::executeCommandList(const DeviceContext& context)
