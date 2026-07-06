@@ -61,6 +61,11 @@ GraphicsPipelineStatePtr dx3d::GraphicsDevice::createGraphicsPipelineState(const
 	return std::make_shared<GraphicsPipelineState>(desc, getGraphicsResourceDesc());
 }
 
+VertexBufferPtr dx3d::GraphicsDevice::createVertexBuffer(const VertexBufferDesc& desc)
+{
+	return std::make_shared<VertexBuffer>(desc, getGraphicsResourceDesc());
+}
+
 void dx3d::GraphicsDevice::executeCommandList(const DeviceContext& context)
 {
 	Microsoft::WRL::ComPtr<ID3D11CommandList> commandList;

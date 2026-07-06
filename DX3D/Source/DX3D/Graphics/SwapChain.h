@@ -7,12 +7,13 @@ namespace dx3d {
 		SwapChain(const SwapChainDesc& desc, const GraphicsResourceDesc& gDesc);
 
 		void present(bool vsync = false);
+		Rect getsize() const noexcept;
 	private:
 		void reloadBuffers();
 	private:
 		Microsoft::WRL::ComPtr<IDXGISwapChain> m_swapChain{};
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_renderTargetView{};
-
+		Rect m_size{};
 		friend class DeviceContext;
 	};
 }

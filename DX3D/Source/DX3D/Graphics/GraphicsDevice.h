@@ -4,6 +4,7 @@
 #include <d3d11.h>
 #include <wrl.h>
 #include <DX3D/Graphics/GraphicsResource.h>
+#include <DX3D/Graphics/VertexBuffer.h>
 
 namespace dx3d {
 	class GraphicsDevice final : public Base, public std::enable_shared_from_this<GraphicsDevice>
@@ -16,6 +17,8 @@ namespace dx3d {
 		DeviceContextPtr createDeviceContext() const;
 		ShaderBinaryPtr compileShader(const ShaderCompileDesc& desc);
 		GraphicsPipelineStatePtr createGraphicsPipelineState(const GraphicsPipelineStateDesc& desc);
+		VertexBufferPtr createVertexBuffer(const VertexBufferDesc& desc);
+
 		void executeCommandList(const DeviceContext& context);
 	private:
 		GraphicsResourceDesc getGraphicsResourceDesc() const noexcept;

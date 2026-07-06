@@ -20,7 +20,7 @@ namespace dx3d {
 			m_device(desc.device),
 			m_factory(desc.factory)
 		{
-			
+		
 		}
 	protected:
 		std::shared_ptr<const GraphicsDevice> m_graphicsDevice;
