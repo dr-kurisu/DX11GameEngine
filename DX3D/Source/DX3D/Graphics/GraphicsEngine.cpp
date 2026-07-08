@@ -4,6 +4,7 @@
 #include <DX3D/Graphics/SwapChain.h>
 #include <DX3D/Math/Vec3.h>
 #include <DX3D/Graphics/VertexBuffer.h>
+#include <fstream>
  
 using namespace dx3d;
 
@@ -13,32 +14,35 @@ dx3d::GraphicsEngine::GraphicsEngine(const GraphicsDesc& desc) : Base(desc.base)
 	auto& device = *m_graphicsDevice;
 	m_deviceContext = device.createDeviceContext();
 
-	constexpr char shaderSourceCode[] =
-		R"(
-float4 VSMain(float3 pos: POSITION): SV_Position
-{
-return float4(pos.xyz, 1.0f);
-}
-
-float4 PSMain(): SV_Target
-{
-return float4(1.0f, 1.0f, 1.0f, 1.0f);
-}
-)";
-	constexpr char shaderSourceName[] = "Basic";
-	constexpr auto shaderSourceCodeSize = std::size(shaderSourceCode);
-
-	auto vs = device.compileShader({ shaderSourceName, shaderSourceCode, shaderSourceCodeSize, "VSMain", ShaderType::Vertex });
-	auto ps = device.compileShader({ shaderSourceName, shaderSourceCode, shaderSourceCodeSize, "PSMain", ShaderType::Pixel });
-
-	m_pipeline = device.createGraphicsPipelineState({ *vs, *ps });
-
-	const Vec3 vertexList[] = {
-		{-0.5f, -0.5f, 0.0f},
-		{0.0f, 0.5f, 0.0f},
-		{0.5f, -0.5f, 0.0f}
+	constexpr char shaderFilePath[] = "DX3D/Assets/Shaders/Basic.hlsl";
+	std::ifstream shaderStream(shaderFilePath);
+	if (!shaderStream) DX3DLogThrowError("Failed to open shader file.");
+	std::string shaderFileData{
+		std::istreambuf_iterator<char>(shaderStream),
+		std::istreambuf_iterator<char>()
 	};
-	m_vb = device.createVertexBuffer({vertexList, std::size(vertexList), sizeof(Vec3)});
+
+
+	auto shaderSourceCode = shaderFileData.c_str();
+	auto shaderSourceCodeSize = shaderFileData.length();
+
+	auto vs = device.compileShader({ shaderFilePath, shaderSourceCode, shaderSourceCodeSize, "VSMain", ShaderType::Vertex });
+	auto ps = device.compileShader({ shaderFilePath, shaderSourceCode, shaderSourceCodeSize, "PSMain", ShaderType::Pixel });
+	auto vsSig = device.createVertexShaderSignature({ vs });
+
+	m_pipeline = device.createGraphicsPipelineState({ *vsSig, *ps });
+
+	const Vertex vertexList[] = 
+	{
+		{ {-0.5f, -0.5f, 0.0f}, {1, 0, 0, 1} },
+		{ {-0.5f, 0.5f, 0.0f}, {0, 1, 0, 1} },
+		{ {0.5f, 0.5f, 0.0f}, {0, 0, 1, 1}},
+
+		{ {0.5f, 0.5f, 0.0f}, {0, 0, 1, 1} },
+		{ {0.5f, -0.5f, 0.0f}, {1, 0, 1, 1} },
+		{ { -0.5f, -0.5f, 0.0f }, {1, 0, 0, 1} }
+	};
+	m_vb = device.createVertexBuffer({vertexList, std::size(vertexList), sizeof(Vertex)});
 }
 
 dx3d::GraphicsEngine::~GraphicsEngine()
@@ -52,7 +56,7 @@ GraphicsDevice& dx3d::GraphicsEngine::getGraphicsDevice() noexcept {
 void dx3d::GraphicsEngine::render(SwapChain& swapChain)
 {
 	auto& context = *m_deviceContext;
-	context.clearAndSetBackBuffer(swapChain, Vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
+	context.clearAndSetBackBuffer(swapChain, Vec4{ 0.27f, 0.39f, 0.55f, 1.0f });
 	context.setGraphicsPipelineState(*m_pipeline);
 
 	context.setViewportSize(swapChain.getsize());

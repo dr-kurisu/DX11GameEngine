@@ -57,8 +57,12 @@ namespace dx3d
 	};
 
 	struct GraphicsPipelineStateDesc {
-		const ShaderBinary& vs;
+		const VertexShaderSignature& vs;
 		const ShaderBinary& ps;
+	};
+
+	struct VertexShaderSignatureDesc {
+		const ShaderBinaryPtr& vsBinary;
 	};
 
 	struct GameDesc {

@@ -1,24 +1,25 @@
-#include <DX3D/Graphics/GraphicsPipelineState.h>
 #include <DX3D/Graphics/ShaderBinary.h>
+#include <DX3D/Graphics/VertexShaderSignature.h>
+#include <DX3D/Graphics/GraphicsPipelineState.h>
 
 dx3d::GraphicsPipelineState::GraphicsPipelineState(const GraphicsPipelineStateDesc& desc, const GraphicsResourceDesc& gDesc) :
 	GraphicsResource(gDesc)
 {
-	if (desc.vs.getType() != ShaderType::Vertex)
-		DX3DLogThrowInvalidArg("The vs member is not a valid vertex shader");
 	if (desc.ps.getType() != ShaderType::Pixel)
 		DX3DLogThrowInvalidArg("The ps member is not a valid pixel shader");
 
 
-	auto vs = desc.vs.getData();
+	auto vs = desc.vs.getShaderBinary();
 	auto ps = desc.ps.getData();
+	auto vsInputElements = desc.vs.getInputBinaryData();
 
-	constexpr D3D11_INPUT_ELEMENT_DESC elements[] = 
-	{
-		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
-	};
-
-	DX3DGraphicsLogThrowOnFail(m_device.CreateInputLayout(elements, std::size(elements), vs.data, vs.dataSize, &m_layout),
+	DX3DGraphicsLogThrowOnFail(
+		m_device.CreateInputLayout(
+			static_cast<const D3D11_INPUT_ELEMENT_DESC*>(vsInputElements.data), 
+			static_cast<ui32>(vsInputElements.dataSize),
+			vs.data, 
+			vs.dataSize, 
+			&m_layout),
 		"CreateInputLayout Failed.");
 
 	DX3DGraphicsLogThrowOnFail(m_device.CreateVertexShader(vs.data, vs.dataSize, nullptr, &m_vs),
