@@ -13,6 +13,8 @@ namespace dx3d
 		void setGraphicsPipelineState(const GraphicsPipelineState& pipeline);
 		void setVertexBuffer(const VertexBuffer& buffer);
 		void setViewportSize(const Rect& size);
+		void setConstantBuffer(const ConstantBuffer& buffer);
+		void updateConstantBuffer(const ConstantBuffer& buffer, void* data);
 		void drawTriangleList(ui32 vertexCount, ui32 startVertexLocation);
 
 	private:

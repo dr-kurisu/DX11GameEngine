@@ -2,6 +2,14 @@
 #include <stdexcept>
 #include <memory>
 
+#define dx3d_disable_copy_and_move(Class)	\
+protected:	\
+	Class(const Class&) = delete;	\
+	Class& operator=(const Class&) = delete;	\
+	Class& operator=(Class&&) = delete;	\
+	Class(Class&&) = delete; \
+
+
 namespace dx3d {
 	class Base;
 	class Window;
@@ -16,6 +24,7 @@ namespace dx3d {
 	class GraphicsPipelineState;
 	class VertexBuffer;
 	class VertexShaderSignature;
+	class ConstantBuffer;
 
 	class Logger;
 	class LoggerOwner;
@@ -26,10 +35,13 @@ namespace dx3d {
 	using d64 = double;
 
 
-	using SwapChainPtr = std::shared_ptr<SwapChain>;
-	using DeviceContextPtr = std::shared_ptr<DeviceContext>;
-	using ShaderBinaryPtr = std::shared_ptr<ShaderBinary>;
-	using GraphicsPipelineStatePtr = std::shared_ptr<GraphicsPipelineState>;
-	using VertexBufferPtr = std::shared_ptr<VertexBuffer>;
-	using VertexShaderSignaturePtr = std::shared_ptr<VertexShaderSignature>;
+	//using SwapChainPtr = std::shared_ptr<SwapChain>;
+	//using DeviceContextPtr = std::shared_ptr<DeviceContext>;
+	//using ShaderBinaryPtr = std::shared_ptr<ShaderBinary>;
+	//using GraphicsPipelineStatePtr = std::shared_ptr<GraphicsPipelineState>;
+	//using VertexBufferPtr = std::shared_ptr<VertexBuffer>;
+	//using VertexShaderSignaturePtr = std::shared_ptr<VertexShaderSignature>;
+
+	template <typename T> using RefPtr = std::shared_ptr<T>;
+	template <typename T> using UniquePtr = std::unique_ptr<T>;
 }

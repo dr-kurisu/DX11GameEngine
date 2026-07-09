@@ -26,5 +26,4 @@ dx3d::GraphicsPipelineState::GraphicsPipelineState(const GraphicsPipelineStateDe
 		"CreateVertexShader Failed.");
 	DX3DGraphicsLogThrowOnFail(m_device.CreatePixelShader(ps.data, ps.dataSize, nullptr, &m_ps),
 		"CreatePixelShader Failed.");
-
 }

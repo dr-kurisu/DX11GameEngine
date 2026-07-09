@@ -43,6 +43,7 @@ dx3d::GraphicsEngine::GraphicsEngine(const GraphicsDesc& desc) : Base(desc.base)
 		{ { -0.5f, -0.5f, 0.0f }, {1, 0, 0, 1} }
 	};
 	m_vb = device.createVertexBuffer({vertexList, std::size(vertexList), sizeof(Vertex)});
+	m_cb = device.createConstantBuffer({ {}, sizeof(ConstantData)});
 }
 
 dx3d::GraphicsEngine::~GraphicsEngine()

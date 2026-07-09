@@ -4,6 +4,11 @@ struct VSInput
     float4 colour : COLOUR0;
 };
 
+cbuffer ConstantData : register(b0)
+{
+    float scale;
+}
+
 struct VSOutput
 {
     float4 position : SV_Position;
@@ -13,7 +18,7 @@ struct VSOutput
 VSOutput VSMain(VSInput input)
 {
     VSOutput output;
-    output.position = float4(input.position, 1.0f);
+    output.position = float4(input.position * scale, 1.0f);
     output.colour = input.colour;
     return output;
 }
