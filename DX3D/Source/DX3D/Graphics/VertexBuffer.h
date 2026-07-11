@@ -1,5 +1,5 @@
 #pragma once
-#include <DX3D/Graphics/GraphicsResource.h>;
+#include <DX3D/Graphics/GraphicsResource.h>
 
 namespace dx3d {
 	class VertexBuffer final : public GraphicsResource {

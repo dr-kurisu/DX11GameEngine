@@ -14,8 +14,9 @@ dx3d::GraphicsDevice::GraphicsDevice(const GraphicsDeviceDesc& desc): Base(desc.
 	D3D_FEATURE_LEVEL featureLevel = {};
 	UINT createDeviceFlags = 0;
 
-#ifdef DEBUG
+#ifdef _DEBUG
 	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#pragma message("_DEBUG defined")
 #endif
 
 	// HRESULT (Failed and Success => <0 and >0)

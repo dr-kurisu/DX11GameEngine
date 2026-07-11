@@ -54,16 +54,24 @@ GraphicsDevice& dx3d::GraphicsEngine::getGraphicsDevice() noexcept {
 	return *m_graphicsDevice;
 }
 
-void dx3d::GraphicsEngine::render(SwapChain& swapChain)
+void dx3d::GraphicsEngine::render(SwapChain& swapChain, f32 deltaTime)
 {
 	auto& context = *m_deviceContext;
+	auto& cb = *m_cb;
+
+	m_sum += deltaTime * 3.0f;
+	m_scale = std::abs(std::sin(m_sum));
+	ConstantData data{};
+	data.scale = m_scale;
+	context.updateConstantBuffer(cb, &data);
+
 	context.clearAndSetBackBuffer(swapChain, Vec4{ 0.27f, 0.39f, 0.55f, 1.0f });
 	context.setGraphicsPipelineState(*m_pipeline);
-
 	context.setViewportSize(swapChain.getsize());
 
 	auto& vb = *m_vb;
 	context.setVertexBuffer(vb);
+	context.setConstantBuffer(cb);
 	context.drawTriangleList(vb.getVertexSize(), 0u);
 
 	auto& device = *m_graphicsDevice;

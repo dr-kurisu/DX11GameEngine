@@ -8,7 +8,7 @@ namespace dx3d
 	public:
 		explicit Base(const BaseDesc& desc);
 		virtual ~Base();
-		virtual Logger& logger() noexcept final;
+		virtual Logger& getLogger() noexcept final;
 	protected:
 		Logger& m_logger;
 	};	

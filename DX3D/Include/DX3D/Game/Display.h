@@ -12,5 +12,3 @@ namespace dx3d {
 		RefPtr<SwapChain> m_swapChain{};
 	};
 }
-
-

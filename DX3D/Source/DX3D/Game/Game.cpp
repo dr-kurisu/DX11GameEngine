@@ -22,7 +22,7 @@ void dx3d::Game::onInternalUpdate()
 	std::chrono::duration<f32> delta = currentTime - m_previousTime;
 	m_previousTime = currentTime;
 	auto deltaTime = delta.count();
-	m_graphicsEngine->render(m_display->getSwapChain());
+	m_graphicsEngine->render(m_display->getSwapChain(), deltaTime);
 }
 
 

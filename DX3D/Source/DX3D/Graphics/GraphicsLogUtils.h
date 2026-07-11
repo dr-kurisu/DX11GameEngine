@@ -37,5 +37,5 @@ namespace dx3d
 #define DX3DGraphicsCheckShaderCompile(hr, errorBlob)\
 {\
 auto res = (hr);\
-dx3d::GraphicsLogUtils::CheckShaderCompile(logger(), res, errorBlob);\
+dx3d::GraphicsLogUtils::CheckShaderCompile(getLogger(), res, errorBlob);\
 }

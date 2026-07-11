@@ -3,6 +3,7 @@
 #include <DX3D/Graphics/GraphicsPipelineState.h>
 #include <DX3D/Graphics/VertexBuffer.h>
 #include <DX3D/Graphics/ConstantBuffer.h>
+#include <assert.h>
 
 dx3d::DeviceContext::DeviceContext(const GraphicsResourceDesc& gDesc): GraphicsResource(gDesc)
 {
@@ -46,6 +47,7 @@ void dx3d::DeviceContext::setViewportSize(const Rect& size)
 void dx3d::DeviceContext::setConstantBuffer(const ConstantBuffer& buffer)
 {
 	auto buf = buffer.m_buffer.Get();
+	assert(buf != nullptr);
 	m_context->VSSetConstantBuffers(0, 1, &buf);
 	m_context->PSSetConstantBuffers(0, 1, &buf);
 }

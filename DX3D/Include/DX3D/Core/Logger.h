@@ -41,7 +41,7 @@ throw exception{msg};\
 	DX3DLog(getLogger(), Logger::LogLevel::Error, message)
 
 #define DX3DLogThrowError(message) \
-	DX3DLogThrow(getLogger(), std::runtime_error, Logger::LogLevel::Info, message)
+	DX3DLogThrow(getLogger(), std::runtime_error, Logger::LogLevel::Error, message)
 
 #define DX3DLogThrowInvalidArg(message) \
-	DX3DLogThrow(getLogger(), std::invalid_argument, Logger::LogLevel::Info, message)
+	DX3DLogThrow(getLogger(), std::invalid_argument, Logger::LogLevel::Error, message)
