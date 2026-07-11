@@ -3,7 +3,6 @@
 #include <DX3D/Graphics/GraphicsPipelineState.h>
 #include <DX3D/Graphics/VertexBuffer.h>
 #include <DX3D/Graphics/ConstantBuffer.h>
-#include <assert.h>
 
 dx3d::DeviceContext::DeviceContext(const GraphicsResourceDesc& gDesc): GraphicsResource(gDesc)
 {
@@ -47,14 +46,13 @@ void dx3d::DeviceContext::setViewportSize(const Rect& size)
 void dx3d::DeviceContext::setConstantBuffer(const ConstantBuffer& buffer)
 {
 	auto buf = buffer.m_buffer.Get();
-	assert(buf != nullptr);
 	m_context->VSSetConstantBuffers(0, 1, &buf);
 	m_context->PSSetConstantBuffers(0, 1, &buf);
 }
 
 void dx3d::DeviceContext::updateConstantBuffer(const ConstantBuffer& buffer, void* data)
 {
-	if (!data) DX3DLogThrowError("Null data pointer passed to updateConstantBuffer.");
+	if (!data) DX3DLogThrowInvalidArg("Null data pointer passed to updateConstantBuffer.");
 
 	auto buf = buffer.m_buffer.Get();
 	D3D11_MAPPED_SUBRESOURCE mapped{};

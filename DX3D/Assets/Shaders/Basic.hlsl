@@ -6,7 +6,7 @@ struct VSInput
 
 cbuffer ConstantData : register(b0)
 {
-    float scale;
+    row_major float4x4 world;
 }
 
 struct VSOutput
@@ -18,7 +18,7 @@ struct VSOutput
 VSOutput VSMain(VSInput input)
 {
     VSOutput output;
-    output.position = float4(input.position * scale, 1.0f);
+    output.position = mul(float4(input.position, 1), world);
     output.colour = input.colour;
     return output;
 }

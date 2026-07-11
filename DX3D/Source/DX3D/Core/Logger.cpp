@@ -13,7 +13,7 @@ dx3d::Logger::~Logger()
 
 }
 
-void dx3d::Logger::log(LogLevel level, const char* msg)
+void dx3d::Logger::_log(LogLevel level, const char* msg)
 {
 	auto logLevelToString = [](LogLevel level) {
 		switch (level) {
