@@ -32,18 +32,46 @@ dx3d::GraphicsEngine::GraphicsEngine(const GraphicsDesc& desc) : Base(desc.base)
 
 	m_pipeline = device.createGraphicsPipelineState({ *vsSig, *ps });
 
-	const Vertex vertexList[] = 
+	const Vertex vertexList[] =
 	{
-		{ {-0.5f, -0.5f, 0.0f}, {1, 0, 0, 1} },
-		{ {-0.5f, 0.5f, 0.0f}, {0, 1, 0, 1} },
-		{ {0.5f, 0.5f, 0.0f}, {0, 0, 1, 1}},
+		{{-0.5f,-0.5f,-0.5f}, {1,0,0,1}},
+		{{-0.5f,0.5f,-0.5f}, {0,1,0,1} },
+		{{0.5f,0.5f,-0.5f},  {0,0,1,1}},
+		{{0.5f,-0.5f,-0.5f}, {1,0,1,1}},
 
-		{ {0.5f, 0.5f, 0.0f}, {0, 0, 1, 1} },
-		{ {0.5f, -0.5f, 0.0f}, {1, 0, 1, 1} },
-		{ { -0.5f, -0.5f, 0.0f }, {1, 0, 0, 1} }
+		{{0.5f,-0.5f,0.5f}, {1,0,1,1}},
+		{{0.5f,0.5f,0.5f}, {0,0,1,1}},
+		{{-0.5f,0.5f,0.5f}, {0,1,0,1}},
+		{{-0.5f,-0.5f,0.5f}, {1,0,0,1}}
 	};
+
+	const ui32 indexList[] =
+	{
+		//winding order: clockwise
+		// 
+		//front face indices
+		0,1,2,  //first triangle
+		2,3,0,  //second triangle
+		//back face indices
+		4,5,6,
+		6,7,4,
+		//top face indices
+		1,6,5,
+		5,2,1,
+		//bottom face indices
+		7,0,3,
+		3,4,7,
+		//right face indices
+		3,2,5,
+		5,4,3,
+		//left face indices
+		7,6,1,
+		1,0,7
+	};
+
 	m_vb = device.createVertexBuffer({vertexList, std::size(vertexList), sizeof(Vertex)});
 	m_cb = device.createConstantBuffer({ {}, sizeof(ConstantData)});
+	m_ib = device.createIndexBuffer({indexList, std::size(indexList)});
 }
 
 dx3d::GraphicsEngine::~GraphicsEngine()
@@ -59,8 +87,8 @@ void dx3d::GraphicsEngine::render(SwapChain& swapChain, f32 deltaTime)
 	auto& context = *m_deviceContext;
 	auto& cb = *m_cb;
 
-	m_pos += deltaTime * 0.5f;
-	m_rot += deltaTime * 3.14f;
+	m_pos += deltaTime * 0.0f;
+	m_rot += deltaTime * 0.707f;
 	m_scale = std::abs(std::sin(m_rot));
 
 	DX3DLogInfo("Pos: X:{} Y:{}", m_pos, m_pos);
@@ -69,14 +97,25 @@ void dx3d::GraphicsEngine::render(SwapChain& swapChain, f32 deltaTime)
 
 	auto worldMat =
 		Mat4::scale({ m_scale,m_scale,m_scale }) *
+		Mat4::rotateX(m_rot) *
+		Mat4::rotateY(m_rot) *
 		Mat4::rotateZ(m_rot) *
-		Mat4::translate({ m_pos ,m_pos ,0 });
-	ConstantData data{ worldMat };
+		Mat4::translate({ m_pos,m_pos,0 });
+
+	//orthographic camera setup
+	auto size = swapChain.getSize();
+	auto aspect = static_cast<f32>(size.width) / size.height;
+	auto unitsPerScreenHeight = 2.0f;
+	auto viewHeight = unitsPerScreenHeight;
+	auto viewWidth = unitsPerScreenHeight * aspect;
+	auto projMat = Mat4::orthoLH(viewWidth, viewHeight, -10.0f, 10.0f);
+
+	ConstantData data{ worldMat, projMat };
 	context.updateConstantBuffer(cb, &data);
 
 	context.clearAndSetBackBuffer(swapChain, Vec4{ 0.27f, 0.39f, 0.55f, 1.0f });
 	context.setGraphicsPipelineState(*m_pipeline);
-	context.setViewportSize(swapChain.getsize());
+	context.setViewportSize(swapChain.getSize());
 
 	auto& vb = *m_vb;
 	context.setVertexBuffer(vb);

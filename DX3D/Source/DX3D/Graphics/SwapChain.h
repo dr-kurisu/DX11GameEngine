@@ -7,7 +7,7 @@ namespace dx3d {
 		SwapChain(const SwapChainDesc& desc, const GraphicsResourceDesc& gDesc);
 
 		void present(bool vsync = false);
-		Rect getsize() const noexcept;
+		Rect getSize() const noexcept;
 	private:
 		void reloadBuffers();
 	private:

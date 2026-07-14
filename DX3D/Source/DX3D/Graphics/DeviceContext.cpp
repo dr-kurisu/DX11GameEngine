@@ -3,6 +3,7 @@
 #include <DX3D/Graphics/GraphicsPipelineState.h>
 #include <DX3D/Graphics/VertexBuffer.h>
 #include <DX3D/Graphics/ConstantBuffer.h>
+#include <DX3D/Graphics/IndexBuffer.h>
 
 dx3d::DeviceContext::DeviceContext(const GraphicsResourceDesc& gDesc): GraphicsResource(gDesc)
 {
@@ -62,9 +63,19 @@ void dx3d::DeviceContext::updateConstantBuffer(const ConstantBuffer& buffer, voi
 	m_context->Unmap(buf, 0);
 }
 
+void dx3d::DeviceContext::setIndexBuffer(const IndexBuffer& buffer) {
+	auto buf = buffer.m_buffer.Get();
+	m_context->IASetIndexBuffer(buf, DXGI_FORMAT_R32_UINT, 0);
+}
+
 void dx3d::DeviceContext::drawTriangleList(ui32 vertexCount, ui32 startVertexLocation)
 {
 	// Set the primitive topology to triangle list
 	m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	m_context->Draw(vertexCount, startVertexLocation);
+}
+
+void dx3d::DeviceContext::drawIndexTriangleList(ui32 indexCount, ui32 startVertexIndex, f32 startIndexLocation) {
+	m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_context->DrawIndexed(indexCount, startVertexIndex, startIndexLocation);
 }

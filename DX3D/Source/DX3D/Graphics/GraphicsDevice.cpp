@@ -6,6 +6,7 @@
 #include <DX3D/Graphics/GraphicsPipelineState.h>
 #include <DX3D/Graphics/vertexShaderSignature.h>
 #include <DX3D/Graphics/ConstantBuffer.h>
+#include <DX3D/Graphics/IndexBuffer.h>
 
 using namespace dx3d;
 
@@ -77,6 +78,11 @@ RefPtr<VertexShaderSignature> dx3d::GraphicsDevice::createVertexShaderSignature(
 RefPtr<ConstantBuffer> dx3d::GraphicsDevice::createConstantBuffer(const ConstantBufferDesc& desc)
 {
 	return std::make_shared<ConstantBuffer>(desc, getGraphicsResourceDesc());
+}
+
+RefPtr<IndexBuffer> dx3d::GraphicsDevice::createIndexBuffer(const IndexBufferDesc& desc)
+{
+	return std::make_shared<IndexBuffer>(desc, getGraphicsResourceDesc());
 }
 
 void dx3d::GraphicsDevice::executeCommandList(const DeviceContext& context)

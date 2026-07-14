@@ -28,7 +28,7 @@ void dx3d::SwapChain::present(bool vsync)
 	DX3DGraphicsLogThrowOnFail(m_swapChain->Present(vsync, 0), "Present Failed.");
 }
 
-dx3d::Rect dx3d::SwapChain::getsize() const noexcept
+dx3d::Rect dx3d::SwapChain::getSize() const noexcept
 {
 	return m_size;
 }
